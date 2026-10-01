@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/valentinorodighero/projeto-PTAS1/issues"
   },
-  "homepage": "https://github.com/valentinorodighero/projeto-PTAS1#readme"
+  "homepage": "https://github.com/valentinorodighero/projeto-PTAS1#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
