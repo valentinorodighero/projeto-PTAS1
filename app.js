@@ -52,72 +52,72 @@ const Livro = [
 //aqui Edicoes guarda cada diferente publicação de uma obra, e o atributo 'edicao' guarda a edição daquela publicação
 const Edicao = [
     {
-        id: 101 , livro_id: '1' , ISBN: '978-8595084742' ,
+        id: 101 , livro_id: 1 , ISBN: '978-8595084742' ,
         editora: 'HarperCollins' , Datpub: '15-07-2019',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:102 , livro_id: '1' , ISBN: '978-6555114188' ,
+        id:102 , livro_id: 1 , ISBN: '978-6555114188' ,
         editora: 'HarperCollins' , Datpub: '22-12-2025',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:103 , livro_id: '2' , ISBN: '978-8535914849' ,
+        id:103 , livro_id: 2 , ISBN: '978-8535914849' ,
         editora: 'Companhia das Letras' , Datpub: '21-07-2009',
         idioma: 'Português' , edicao: '1'
     },
     {
-        id:104 , livro_id: '3' , ISBN: '978-8595084759' ,
+        id:104 , livro_id: 3 , ISBN: '978-8595084759' ,
         editora: 'HarperCollins' , Datpub: '25-11-2019',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:105 , livro_id: '3' , ISBN: '978-6555117929' ,
+        id:105 , livro_id: 3 , ISBN: '978-6555117929' ,
         editora: 'HarperCollins' , Datpub: '01-01-2025',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:106 , livro_id: '4' , ISBN: '978-8595084766' ,
+        id:106 , livro_id: 4 , ISBN: '978-8595084766' ,
         editora: 'HarperCollins' , Datpub: '25-11-2025',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:107 , livro_id: '5' , ISBN: '978-8595084773' ,
+        id:107 , livro_id: 5 , ISBN: '978-8595084773' ,
         editora: 'HarperCollins' , Datpub: '25-11-2025',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:108 , livro_id: '2' , ISBN: '978-6555522266' ,
+        id:108 , livro_id: 2 , ISBN: '978-6555522266' ,
         editora: 'Principis' , Datpub: '01-01-2021',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:109 , livro_id: '6' , ISBN: '978-8535909555' ,
+        id:109 , livro_id: 6 , ISBN: '978-8535909555' ,
         editora: 'Companhia das Letras' , Datpub: '01-03-2017',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:110 , livro_id: '7' , ISBN: '978-8578886431' ,
+        id:110 , livro_id: 7 , ISBN: '978-8578886431' ,
         editora: 'Panda Books' , Datpub: '10-01-2007',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:111 , livro_id: '7' , ISBN: '978-8582850343' ,
+        id:111 , livro_id: 7 , ISBN: '978-8582850343' ,
         editora: 'Penguin-Companhia' , Datpub: '23-06-2016',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:112 , livro_id: '8' , ISBN: '978-8594318602' ,
+        id:112 , livro_id: 8 , ISBN: '978-8594318602' ,
         editora: 'Principis' , Datpub: '02-05-2019',
         idioma: 'Português' , edicao: '3' 
     },
     {
-        id:113 , livro_id: '9' , ISBN: '978-8525056122' ,
+        id:113 , livro_id: 9 , ISBN: '978-8525056122' ,
         editora: 'Alt' , Datpub: '01-04-2014',
         idioma: 'Português' , edicao: '1' 
     },
     {
-        id:114 , livro_id: '10' , ISBN: '978-6558885474' ,
+        id:114 , livro_id: 10 , ISBN: '978-6558885474' ,
         editora: 'Pé da letra' , Datpub: '24-03-2023',
         idioma: 'Português' , edicao: '1' 
     },
@@ -598,7 +598,9 @@ app.post('/livro',[Autenticar, ValidarLivro, RegistrarLog], (req, res) =>{
 
 //POST para adicionar uma nova edição
 app.post('/edicao', [Autenticar, ValidarEdicao, RegistrarLog], (req, res) =>{
-    const { livro_id, ISBN, editora, Datpub, idioma, edicao } = req.body;
+    const { ISBN, editora, Datpub, idioma, edicao } = req.body;
+
+    const livro_id = Number(req.body.livro_id);
 
     const NewEdicao = {
         id: Math.max(...Edicao.map(i => i.id)) + 1,
@@ -615,7 +617,10 @@ app.post('/edicao', [Autenticar, ValidarEdicao, RegistrarLog], (req, res) =>{
 
 //POST para adicionar um novo exemplar
 app.post('/exemplar', [Autenticar, ValidarExemplar, RegistrarLog], (req, res) =>{
-    const { livro_id, edicao_id, status, DatAdqui, loc, COD } = req.body;
+    const { status, DatAdqui, loc, COD } = req.body;
+
+    const livro_id = Number(req.body.livro_id);
+    const edicao_id = Number(req.body.edicao_id);
 
     const NewExemplar = {
         id: Math.max(...Exemplar.map(i => i.id)) + 1,
@@ -656,8 +661,8 @@ app.post('/emprestimo', [Autenticar, ValidarEmprestimo, ChecarDatas, AlterarStat
 
     const NovoEmprestimo = {
         id: Math.max(...Emprestimos.map(i => i.id)) + 1,
-        leitor_id,
-        exemplar_id,
+        leitor_id: Number(leitor_id),
+        exemplar_id: Number(exemplar_id),
         //tranforma os valores Date em string no mesmo formato que está nas variaveis
         data_emprestimo: data_emprestimo.toISOString().slice(0, 10),
         data_devolucao: data_devolucao.toISOString().slice(0, 10),
