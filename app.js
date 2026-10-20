@@ -506,7 +506,7 @@ app.get('/livro', (req, res) =>{
         resultado = resultado.filter( i => i.autor.toLowerCase().includes(autor.toLowerCase()));
     }
     if(Ano_lancamento){
-        resultado = resultado.filter( i => i.Ano_lancamento.toLowerCase() == Ano_lancamento.toLowerCase());
+        resultado = resultado.filter( i => i.Ano_lancamento == Ano_lancamento);
     }
     if(genero){
         // como os livros podem ter varios generos e existem subgeneros, como romance naturalista o .includes() ajuda a contronar isso
@@ -652,7 +652,7 @@ app.post('/exemplar', [Autenticar, ValidarExemplar, RegistrarLog], (req, res) =>
 });
 
 //POST para adicionar um novo leitor
-app.post("/leitores", (req, res) => {
+app.post("/leitores", Autenticar , (req, res) => {
     const { nome, email, telefone, multa } = req.body;
     const novoLeitor = {
         id: Math.max(...leitores.map(i => i.id)) + 1,
@@ -693,7 +693,7 @@ app.post('/emprestimo', [Autenticar, ValidarEmprestimo, ChecarDatas, AlterarStat
 //Rotas PATCH/PUT
 
 //rota de atualização de livros
-app.patch('/livro/:id', (req, res) =>{
+app.patch('/livro/:id', Autenticar , (req, res) =>{
     const livro = Livro.find(i => i.id == req.params.id);
 
     if(!livro){
@@ -712,7 +712,7 @@ app.patch('/livro/:id', (req, res) =>{
 });
 
 //atualiza um exemplar, seu staus ou localização que são os dois atributos que podem ser alterados
-app.patch('/exemplar/:id', (req, res) =>{
+app.patch('/exemplar/:id', Autenticar , (req, res) =>{
     const id = parseInt(req.params.id);
     
     const exemplar = Exemplar.find(i => i.id == id);
@@ -730,7 +730,7 @@ app.patch('/exemplar/:id', (req, res) =>{
 });
 
 //atualiza um leitor
-app.put("/leitores/:id", (req, res) => {
+app.put("/leitores/:id", Autenticar , (req, res) => {
     const id = parseInt(req.params.id);
     const leitor = leitores.find(l => l.id === id);
     if (!leitor) 
@@ -746,7 +746,7 @@ app.put("/leitores/:id", (req, res) => {
     res.json(leitor);
 });
 
-app.patch('/emprestimos/:id/devolver', (req, res) => {
+app.patch('/emprestimos/:id/devolver', Autenticar , (req, res) => {
     const id = parseInt(req.params.id);
     const emprestimo = Emprestimos.find(i => i.id === id);
 
@@ -774,7 +774,7 @@ app.patch('/emprestimos/:id/devolver', (req, res) => {
 //Rotas delete
 
 //rota de exclusão de livro
-app.delete('/livro/:id', (req, res) =>{
+app.delete('/livro/:id', Autenticar , (req, res) =>{
     const id = parseInt(req.params.id);
     
     const Index = Livro.findIndex(i => i.id == id);
@@ -799,7 +799,7 @@ app.delete('/livro/:id', (req, res) =>{
 });
 
 //rota de exclusão de edição
-app.delete('/edicao/:id', (req, res) =>{
+app.delete('/edicao/:id', Autenticar , (req, res) =>{
     const id = parseInt(req.params.id);
     
     const Index = Edicao.findIndex(i => i.id == id);
@@ -823,7 +823,7 @@ app.delete('/edicao/:id', (req, res) =>{
 });
 
 //rota de exclusão de exemplar
-app.delete('/exemplar/:id', (req, res) =>{
+app.delete('/exemplar/:id', Autenticar , (req, res) =>{
     const id = parseInt(req.params.id);
     
     const Index = Exemplar.findIndex(i => i.id == id);
@@ -840,7 +840,7 @@ app.delete('/exemplar/:id', (req, res) =>{
 });
 
 //rota de exclusão de leitor
-app.delete("/leitores/:id", (req, res) => {
+app.delete("/leitores/:id", Autenticar , (req, res) => {
     const id = parseInt(req.params.id);
     const indice = leitores.findIndex(l => l.id === id);
     if (indice === -1) {
