@@ -9,43 +9,43 @@ app.use(express.json());
 const Livro = [
     {
         id: 1 , titulo: 'O Hobbit' , autor: 'John Ronald Reuel Tolkien' ,
-        Ano_lancamento: '1937' , genero: 'fantasia' , tipo: 'romance'
+        Ano_lancamento: 1937 , genero: 'fantasia' , tipo: 'romance'
     },
     {
         id: 2 , titulo: '1984' , autor: 'George Orwell' ,
-        Ano_lancamento: '1949' , genero: 'distopia , ficção científica' ,tipo: 'Romance'
+        Ano_lancamento: 1949 , genero: 'distopia , ficção científica' ,tipo: 'Romance'
     },
     {
         id: 3 , titulo: 'O Senhor dos Anéis: A Sociedade do Anel' , autor: 'John Ronald Reuel Tolkien' ,
-        Ano_lancamento: '1954' , genero: 'fantasia' , tipo: 'romance'
+        Ano_lancamento: 1954 , genero: 'fantasia' , tipo: 'romance'
     },
     {
         id: 4 , titulo: 'O Senhor dos Anéis: As duas torres' , autor: 'John Ronald Reuel Tolkien' ,
-        Ano_lancamento: '1954' , genero: 'fantasia' , tipo: 'romance'
+        Ano_lancamento: 1954 , genero: 'fantasia' , tipo: 'romance'
     },
     {
         id: 5 , titulo: 'O Senhor dos Anéis: O retorno do rei' , autor: 'John Ronald Reuel Tolkien' ,
-        Ano_lancamento: '1954' , genero: 'fantasia' , tipo: 'romance'
+        Ano_lancamento: 1954 , genero: 'fantasia' , tipo: 'romance'
     },
     {
         id: 6 , titulo: 'A revolução dos bichos' , autor: 'George Orwell' ,
-        Ano_lancamento: '1945' , genero: 'fábula , crítica politica' , tipo: 'romance'
+        Ano_lancamento: 1945 , genero: 'fábula , crítica politica' , tipo: 'romance'
     },
     {
         id: 7 , titulo: 'O cortiço' , autor: 'Aluísio Azevedo' ,
-        Ano_lancamento: '1890' , genero: 'romance naturalista' , tipo: 'romance'
+        Ano_lancamento: 1890 , genero: 'romance naturalista' , tipo: 'romance'
     },
     {
         id: 8 , titulo: 'Dom Casmurro' , autor: 'Machado de Assis' ,
-        Ano_lancamento: '1899' , genero: 'romance realista' , tipo: 'romance'
+        Ano_lancamento: 1899 , genero: 'romance realista' , tipo: 'romance'
     },
     {
         id: 9 , titulo: 'Battle Royale' , autor: 'Koushun Takami' ,
-        Ano_lancamento: '1999' , genero: 'Ficção distópica , Ação e suspense' , tipo: 'romance'
+        Ano_lancamento: 1999 , genero: 'Ficção distópica , Ação e suspense' , tipo: 'romance'
     },
     {
         id: 10 , titulo: 'Enciclopédia do Corpo Humano' , autor: 'Pé da letra' ,
-        Ano_lancamento: '2023' , genero: 'Educação' , tipo: 'enciclopédia'
+        Ano_lancamento: 2023 , genero: 'Educação' , tipo: 'enciclopédia'
     },
     
 ];
@@ -269,11 +269,27 @@ function ValidarLivro(req, res, next){
     const { titulo, autor, Ano_lancamento, genero, tipo } = req.body;
     
     if(
-        !titulo || !autor || !Ano_lancamento || !genero || !tipo ||
-        titulo.trim() == '' || autor.trim() == '' || Ano_lancamento.trim() == '' || genero.trim() == '' || tipo.trim() == ''
+        typeof titulo !== "string" ||
+        typeof autor !== "string" ||
+        typeof genero !== "string" ||
+        typeof tipo !== "string" 
+    ){
+        return res.status(400).json({erro: 'Título, autor e gênero e tipo devem ser texto'});
+    };
+    
+    if(
+        !titulo.trim() || !autor.trim() || !genero.trim() || !tipo.trim() 
     ){
         return res.status(400).json({erro: 'Todos os campos são obrigatórios e não podem estar vazios'});
     };
+
+
+    if (!Number.isInteger(Number(Ano_lancamento))){
+        return res.status(400).json({
+            erro: 'Ano_lancamento deve ser um número'
+        });
+    };
+
     next();
 };
 
@@ -588,7 +604,7 @@ app.post('/livro',[Autenticar, ValidarLivro, RegistrarLog], (req, res) =>{
         id: Math.max(...Livro.map(i => i.id)) + 1,
         titulo,
         autor,
-        Ano_lancamento,
+        Ano_lancamento: Number(Ano_lancamento),
         genero,
         tipo
     };
