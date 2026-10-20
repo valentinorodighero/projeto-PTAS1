@@ -276,7 +276,7 @@ function ValidarLivro(req, res, next){
     ){
         return res.status(400).json({erro: 'Título, autor e gênero e tipo devem ser texto'});
     };
-    
+
     if(
         !titulo.trim() || !autor.trim() || !genero.trim() || !tipo.trim() 
     ){
@@ -655,7 +655,7 @@ app.post('/exemplar', [Autenticar, ValidarExemplar, RegistrarLog], (req, res) =>
 app.post("/leitores", (req, res) => {
     const { nome, email, telefone, multa } = req.body;
     const novoLeitor = {
-        id: leitores.length + 1,
+        id: Math.max(...leitores.map(i => i.id)) + 1,
         nome,
         email,
         telefone,
