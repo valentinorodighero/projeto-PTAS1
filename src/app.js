@@ -1,6 +1,10 @@
 import express from 'express';
 
+//importar tudo do Routes
+
 const app = express();
+
+
 const PORT = 3000;
 
 app.use(express.json());
@@ -861,11 +865,7 @@ app.use((req, res) =>{
     });
 });
 
-app.listen(PORT, () =>{
-    console.log(
-        `Servidor ouvindo na porta: http://localhost:${PORT}`
-    );
-});
+export default app;
 
 /*
     MAPA DAS ROTAS DOS LIVROS, EDIÇÕES E EXEMPLARES
