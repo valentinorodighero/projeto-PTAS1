@@ -6,7 +6,7 @@ import { obterBanco } from '../config/database.js';
 
 // Atalho para a coleção "livros". Cada documento dela é uma tarefa.
 function colecao() {
-  return obterBanco().collection('Livro');
+  return obterBanco().collection('Livros');
 }
 
 export async function buscarTodas() {
@@ -23,9 +23,9 @@ export async function buscarPorId(id) {
   return colecao().findOne({ _id: new ObjectId(id) });
 }
 
-export async function inserir(tarefa) {
+export async function inserir(livro) {
   // mongosh: db.livros.insertOne({ titulo: "Estudar", concluida: false })
-  const resultado = await colecao().insertOne(tarefa);
+  const resultado = await colecao().insertOne(livro);
   return resultado.insertedId;
 }
 
