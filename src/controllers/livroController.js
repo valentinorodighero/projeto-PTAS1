@@ -1,121 +1,96 @@
-import * as livroService from "../services/livroService.js";
+import * as livroService from "../services/livroServices.js";
 
 // GET /livro
 export function listarLivros(req, res) {
+  const livros = livroService.listarLivros(req.query);
 
-    const livros = livroService.listarLivros(
-        req.query
-    );
-
-    res.status(200).json(livros);
+  res.status(200).json(livros);
 }
 
 // GET /livro/:id
 export function buscarLivroPorId(req, res) {
+  const id = Number(req.params.id);
 
-    const id = Number(req.params.id);
+  const livro = livroService.buscarLivroPorId(id);
 
-    const livro =
-        livroService.buscarLivroPorId(id);
+  if (!livro) {
+    return res.status(404).json({
+      erro: "Livro não encontrado",
+    });
+  }
 
-    if (!livro) {
-        return res.status(404).json({
-            erro: "Livro não encontrado"
-        });
-    }
-
-    res.status(200).json(livro);
+  res.status(200).json(livro);
 }
 
 // GET /livro/:id/detalhes
 export function buscarDetalhesLivro(req, res) {
+  const id = Number(req.params.id);
 
-    const id = Number(req.params.id);
+  const detalhes = livroService.buscarDetalhesLivro(id);
 
-    const detalhes =
-        livroService.buscarDetalhesLivro(id);
+  if (!detalhes) {
+    return res.status(404).json({
+      erro: "Livro não encontrado",
+    });
+  }
 
-    if (!detalhes) {
-        return res.status(404).json({
-            erro: "Livro não encontrado"
-        });
-    }
-
-    res.status(200).json(detalhes);
+  res.status(200).json(detalhes);
 }
 
 // GET /livro/:id/disponibilidade
 export function buscarDisponibilidadeLivro(req, res) {
+  const id = Number(req.params.id);
 
-    const id = Number(req.params.id);
+  const disponibilidade = livroService.buscarDisponibilidadeLivro(id);
 
-    const disponibilidade =
-        livroService.buscarDisponibilidadeLivro(id);
+  if (!disponibilidade) {
+    return res.status(404).json({
+      erro: "Livro não encontrado",
+    });
+  }
 
-    if (!disponibilidade) {
-        return res.status(404).json({
-            erro: "Livro não encontrado"
-        });
-    }
-
-    res.status(200).json(disponibilidade);
+  res.status(200).json(disponibilidade);
 }
 
 // POST /livro
 export function criarLivro(req, res) {
+  const novoLivro = livroService.criarLivro(req.body);
 
-    const novoLivro =
-        livroService.criarLivro(
-            req.body
-        );
-
-    res.status(201).json(novoLivro);
+  res.status(201).json(novoLivro);
 }
 
 // PATCH /livro/:id
 export function atualizarLivro(req, res) {
+  const id = Number(req.params.id);
 
-    const id = Number(req.params.id);
+  const livroAtualizado = livroService.atualizarLivro(id, req.body);
 
-    const livroAtualizado =
-        livroService.atualizarLivro(
-            id,
-            req.body
-        );
-
-    if (!livroAtualizado) {
-        return res.status(404).json({
-            erro: "Livro não encontrado"
-        });
-    }
-
-    res.status(200).json({
-        mensagem:
-            "Livro atualizado com sucesso",
-        livro: livroAtualizado
+  if (!livroAtualizado) {
+    return res.status(404).json({
+      erro: "Livro não encontrado",
     });
+  }
+
+  res.status(200).json({
+    mensagem: "Livro atualizado com sucesso",
+    livro: livroAtualizado,
+  });
 }
 
 // DELETE /livro/:id
 export function deletarLivro(req, res) {
+  const id = Number(req.params.id);
 
-    const id = Number(req.params.id);
+  const resultado = livroService.deletarLivro(id);
 
-    const resultado =
-        livroService.deletarLivro(id);
-
-    if (resultado.erro) {
-        return res.status(
-            resultado.status
-        ).json({
-            erro: resultado.erro
-        });
-    }
-
-    res.status(200).json({
-        mensagem:
-            "Livro excluído com sucesso",
-        livroRemovido:
-            resultado.livroRemovido
+  if (resultado.erro) {
+    return res.status(resultado.status).json({
+      erro: resultado.erro,
     });
+  }
+
+  res.status(200).json({
+    mensagem: "Livro excluído com sucesso",
+    livroRemovido: resultado.livroRemovido,
+  });
 }

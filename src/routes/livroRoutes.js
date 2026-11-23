@@ -1,76 +1,42 @@
 import { Router } from "express";
 
 import {
-    listarLivros,
-    buscarLivroPorId,
-    buscarDetalhesLivro,
-    buscarDisponibilidadeLivro,
-    criarLivro,
-    atualizarLivro,
-    deletarLivro
+  listarLivros,
+  buscarLivroPorId,
+  buscarDetalhesLivro,
+  buscarDisponibilidadeLivro,
+  criarLivro,
+  atualizarLivro,
+  deletarLivro,
 } from "../controllers/livroController.js";
 
-import {
-    autenticar
-} from "../middlewares/autenticar.js";
+import { autenticar } from "../middleware/autenticar.js";
 
-import {
-    validarLivro
-} from "../middlewares/validarLivro.js";
+import { validarLivro } from "../middleware/validarLivro.js";
 
-import {
-    registrarLog
-} from "../middlewares/registrarLog.js";
+import { registrarLog } from "../middleware/registrarLog.js";
 
 const router = Router();
 
 // GET /livro
-router.get(
-    "/",
-    listarLivros
-);
+router.get("/", listarLivros);
 
 // GET /livro/:id
-router.get(
-    "/:id",
-    buscarLivroPorId
-);
+router.get("/:id", buscarLivroPorId);
 
 // GET /livro/:id/detalhes
-router.get(
-    "/:id/detalhes",
-    buscarDetalhesLivro
-);
+router.get("/:id/detalhes", buscarDetalhesLivro);
 
 // GET /livro/:id/disponibilidade
-router.get(
-    "/:id/disponibilidade",
-    buscarDisponibilidadeLivro
-);
+router.get("/:id/disponibilidade", buscarDisponibilidadeLivro);
 
 // POST /livro
-router.post(
-    "/",
-    autenticar,
-    validarLivro,
-    registrarLog,
-    criarLivro
-);
+router.post("/", autenticar, validarLivro, registrarLog, criarLivro);
 
 // PATCH /livro/:id
-router.patch(
-    "/:id",
-    autenticar,
-    registrarLog,
-    atualizarLivro
-);
+router.patch("/:id", autenticar, registrarLog, atualizarLivro);
 
 // DELETE /livro/:id
-router.delete(
-    "/:id",
-    autenticar,
-    registrarLog,
-    deletarLivro
-);
+router.delete("/:id", autenticar, registrarLog, deletarLivro);
 
 export default router;
